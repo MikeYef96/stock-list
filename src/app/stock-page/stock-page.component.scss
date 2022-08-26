@@ -1,0 +1,41 @@
+.chart-wrapper {
+  margin: 20px;
+  height: 300px;
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+::ng-deep .mat-spinner circle {
+  stroke: darken(#f4f5ff, 10%);
+}
+
+.description-wrapper {
+  margin-top: 20px;
+  padding: 20px 100px 20px 50px;
+
+  .business-summary {
+    margin: 20px 0 40px;
+  }
+
+  .contacts {
+    display: flex;
+    justify-content: space-between;
+
+    .left-side {
+      div + div {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .company-officers {
+    ul {
+      padding-left: 15px;
+      margin: 0;
+    }
+  }
+}

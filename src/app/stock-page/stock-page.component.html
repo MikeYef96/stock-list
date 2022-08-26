@@ -1,0 +1,40 @@
+<div class="chart-wrapper">
+  <app-chart></app-chart>
+</div>
+
+<ng-container *ngIf="!(stockDataLoaded$ | async)">
+  <div class="spinner-wrapper">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="infoData && (stockDataLoaded$ | async)">
+  <div class="description-wrapper">
+    <div class="title">{{ symbol + ' (' + infoData.industry + ') - ' + infoData.sector }}</div>
+    <div class="business-summary"> {{ infoData.longBusinessSummary }} </div>
+
+    <div class="contacts">
+      <div class="left-side">
+        <div class="address">
+          Address:
+          {{ infoData.country }},
+          {{ infoData.state }},
+          {{ infoData.city }}
+        </div>
+        <div class="phone">Phone: {{ infoData.phone }}</div>
+        <div class="web-site">Web Site: <a [href]="infoData.website"> {{ infoData.website }} </a></div>
+      </div>
+
+      <div class="right-side">
+        <div class="company-officers">
+          Company Officers:
+          <ul>
+            <ng-container *ngFor="let member of infoData.companyOfficers">
+              <li> {{ member.name + ' (' + member.title + ')' }} </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

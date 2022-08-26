@@ -1,0 +1,25 @@
+.menu {
+  background: #f4f5ff;
+  height: 100%;
+
+  .label {
+    font-size: 24px;
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 40px;
+  }
+
+  .mat-list {
+    width: 150px;
+
+    .mat-list-item {
+      cursor: pointer;
+      background: darken(#f4f5ff, 2%);
+
+      &.active,
+      &:hover {
+        background: darken(#f4f5ff, 10%);
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+export const symbolsMock: string[] = [
+  'AAPL',
+  'GOOG',
+  'FB',
+  'AMZN',
+  'TWTR',
+  'JNPR',
+  'IPG',
+  'PANW',
+  'IBM',
+  'DDD',
+  'TLRY',
+  'VRPX',
+  'ALF',
+  'MNDY',
+  'HD',
+  'WB',
+];

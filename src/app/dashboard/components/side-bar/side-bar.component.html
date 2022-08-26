@@ -1,0 +1,16 @@
+<div class="menu">
+  <div class="label">
+    Menu:
+  </div>
+
+  <mat-list role="list">
+    <ng-container *ngFor="let item of sideBarList">
+      <mat-list-item
+        role="listitem"
+        routerLinkActive="active"
+        [routerLink]="item.route"
+      > {{ item.label }} </mat-list-item>
+    </ng-container>
+  </mat-list>
+</div>
+
