@@ -1,6 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { filter, takeUntil } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 
@@ -13,28 +17,31 @@ import { tableColumns } from './constants/stock-list.constants';
 @Component({
   selector: 'app-stock-list',
   templateUrl: './stocks-list.component.html',
-  styleUrls: ['./stocks-list.component.scss']
+  styleUrls: ['./stocks-list.component.scss'],
+  standalone: true,
+  imports: [CommonModule, MatTableModule, MatFormFieldModule, MatInputModule, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StocksListComponent implements OnDestroy {
-
+export class StocksListComponent {
   displayedColumns: string[] = tableColumns;
-  dataSource!: MatTableDataSource<StockListModel>;
+  dataSource: MatTableDataSource<StockListModel> = new MatTableDataSource<StockListModel>();
+  subscription$ = new Subject<void>();
 
-  subscription$ = new Subject();
-
-  constructor(public storeStockList: Store<StocksListState>) {
+  constructor(
+    public storeStockList: Store<StocksListState>,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.storeStockList.dispatch(stockList());
     this.storeStockList.select(selectStocksList)
       .pipe(
         takeUntil(this.subscription$),
         filter((stocks: StockListModel[]) => Boolean(stocks))
       )
-      .subscribe((stocks: StockListModel[]) => this.dataSource = new MatTableDataSource(stocks))
-  }
-
-  ngOnDestroy() {
-    this.subscription$.next();
-    this.subscription$.complete();
+      .subscribe((stocks: StockListModel[]) => {
+        this.dataSource = new MatTableDataSource(stocks);
+        this.cdr.markForCheck();
+      });
   }
 
   applyFilter(event: Event) {
@@ -44,4 +51,7 @@ export class StocksListComponent implements OnDestroy {
     }
   }
 
+  navigateToStock(symbol: string) {
+    this.router.navigate(['/dashboard/stock-page'], { queryParams: { symbol } });
+  }
 }

@@ -1,5 +1,5 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -9,11 +9,8 @@ import { ChartDataModel } from '../interfaces/chart-data.model';
 
 @Injectable()
 export class StockEffects {
-
-  constructor(
-    private actions$: Actions,
-    private stockApiService: StockApiService
-  ) { }
+  private actions$: Actions = inject(Actions);
+  private stockApiService: StockApiService = inject(StockApiService);
 
   stockData$ = createEffect(() => this.actions$.pipe(
     ofType(stockInfoActions.stockData),
