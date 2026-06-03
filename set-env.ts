@@ -14,5 +14,5 @@ const envConfigFile = `export const environment = {
 
 writeFile(targetPath, envConfigFile, (err) => {
    if (err) throw err;
-   console.log(`Angular environment.ts file generated dynamically!`);
+   console.log(`Angular environment.ts file generated!`);
 });

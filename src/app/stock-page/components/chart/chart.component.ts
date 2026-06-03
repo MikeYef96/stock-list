@@ -49,7 +49,6 @@ export class ChartComponent {
         filter(res => Boolean(res) && Array.isArray(res) && res.length > 0)
       )
       .subscribe((chartData: ChartDataModel[]) => {
-        console.log(chartData);
         this.multi = this.getViewChartData(chartData);
       });
   }

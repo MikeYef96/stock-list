@@ -20,12 +20,12 @@ export class ConfigService {
           `${environment.baseUrl}/config`
         )
       );
-      console.log('✅ Config loaded from backend');
+      
       this.rapidApiKey.set(config.rapidApiKey);
       this.rapidApiHost.set(config.rapidApiHost);
       this.configLoaded.set(true);
     } catch (error) {
-      console.error('❌ Failed to load config:', error);
+      console.error('Failed to load config:', error);
     }
   }
 }
