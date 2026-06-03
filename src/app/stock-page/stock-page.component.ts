@@ -1,27 +1,34 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { StockApiService } from './services/stock-api.service';
 import { StockState } from './store/stock.reducer';
-import * as stockActions from './store/stock.actions'
-import * as stockSelectors from './store/stock.selectors'
+import * as stockActions from './store/stock.actions';
+import * as stockSelectors from './store/stock.selectors';
 import { StockInfoModel } from './interfaces/stock-info.model';
+import { ChartComponent } from './components/chart/chart.component';
 
 @Component({
   selector: 'app-stock-page',
   templateUrl: './stock-page.component.html',
-  styleUrls: ['./stock-page.component.scss']
+  styleUrls: ['./stock-page.component.scss'],
+  standalone: true,
+  imports: [CommonModule, MatProgressSpinnerModule, ChartComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StockPageComponent implements OnDestroy {
-
+export class StockPageComponent {
   infoData!: StockInfoModel;
   symbol!: string;
+  subscription$ = new Subject<void>();
 
-  stockDataLoaded$: Observable<boolean> = this.stockStore.select(stockSelectors.selectStockDataLoaded);
-  subscription$ = new Subject();
+  get stockDataLoaded$(): Observable<boolean> {
+    return this.stockStore.select(stockSelectors.selectStockDataLoaded);
+  }
 
   constructor(
     private stockApiService: StockApiService,
@@ -37,12 +44,6 @@ export class StockPageComponent implements OnDestroy {
         takeUntil(this.subscription$),
         filter(res => Boolean(res))
       )
-      .subscribe((infoData: StockInfoModel) => this.infoData = infoData)
+      .subscribe((infoData: StockInfoModel) => this.infoData = infoData);
   }
-
-  ngOnDestroy() {
-    this.subscription$.next();
-    this.subscription$.complete();
-  }
-
 }
